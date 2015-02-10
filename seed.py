@@ -1,5 +1,6 @@
 import model
 import csv
+from datetime import datetime
 
 def load_users(session):
     # use u.user
@@ -27,32 +28,35 @@ def load_movies(session):
         parsed_line = clean_line.split("|")
         temp_movie = model.Movie()
         temp_movie.id = parsed_line[0]
-        temp_movie.name = parsed_line[1]
-        temp_movie.released_at = parsed_line[2].split("-")
-            
-
+        name = parsed_line[1]
+        temp_movie.name = name.decode("latin-1")
+        if parsed_line[2]=="":
+            temp_movie.released_at = None
+        else:
+            temp_movie.released_at = datetime.strptime(parsed_line[2], '%d-%b-%Y')
         temp_movie.imdb_url = parsed_line[4]
         session.add(temp_movie)
     session.commit()
     file.close()
 def load_ratings(session):
     # use u.data
-    file = open("seed_data/u.data")
-    for line in file:
-        clean_line = line.strip()
-        parsed_line = clean_line.split("|")
-        temp_rating = model.Rating() 
-        temp_rating.movie_id = temp_rating[1]
-        temp_rating.user_id = temp_rating[0]
-        temp_rating.rating = temp_rating[2]
-        session.add(temp_rating)
+    # file = open("seed_data/u.data")
+    with open("seed_data/u.data", "rb") as file:
+        our_reader = csv.reader(file, delimiter='\t', quoting=csv.QUOTE_NONE)
+        for line in our_reader:
+            print line
+            temp_rating = model.Rating() 
+            temp_rating.movie_id = line[1]
+            temp_rating.user_id = line[0]
+            temp_rating.rating = line[2]
+            session.add(temp_rating)
     session.commit()
     file.close()
 
 
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
-    # load_users(session)
+    load_users(session)
     load_movies(session)
     load_ratings(session)
 
