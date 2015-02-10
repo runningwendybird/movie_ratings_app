@@ -3,19 +3,58 @@ import csv
 
 def load_users(session):
     # use u.user
-    pass
+    file = open("seed_data/u.user")
+    for line in file:
+        clean_line = line.strip()
+        parsed_line = clean_line.split("|")
+        temp_user = model.User(id=parsed_line[0], age=parsed_line[1], zipcode=parsed_line[4])
+        # temp_user.id = parsed_line[0]
+        # temp_user.email = null
+        # temp_user.password = null
+        # temp_user.age = parsed_line[1]
+        # temp_user.zipcode = parsed_line[4]
+        session.add(temp_user)
+    session.commit()
+    file.close()
+
+
 
 def load_movies(session):
     # use u.item
-    pass
+    file = open("seed_data/u.item")
+    for line in file:
+        clean_line = line.strip()
+        parsed_line = clean_line.split("|")
+        temp_movie = model.Movie()
+        temp_movie.id = parsed_line[0]
+        temp_movie.name = parsed_line[1]
+        temp_movie.released_at = parsed_line[2].split("-")
+            
 
+        temp_movie.imdb_url = parsed_line[4]
+        session.add(temp_movie)
+    session.commit()
+    file.close()
 def load_ratings(session):
     # use u.data
-    pass
+    file = open("seed_data/u.data")
+    for line in file:
+        clean_line = line.strip()
+        parsed_line = clean_line.split("|")
+        temp_rating = model.Rating() 
+        temp_rating.movie_id = temp_rating[1]
+        temp_rating.user_id = temp_rating[0]
+        temp_rating.rating = temp_rating[2]
+        session.add(temp_rating)
+    session.commit()
+    file.close()
+
 
 def main(session):
     # You'll call each of the load_* functions with the session as an argument
-    pass
+    # load_users(session)
+    load_movies(session)
+    load_ratings(session)
 
 if __name__ == "__main__":
     s= model.connect()
