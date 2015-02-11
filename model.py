@@ -7,7 +7,7 @@ from sqlalchemy.orm import relationship, backref
 
 
 
-ENGINE = create_engine("sqlite:///ratings.db", echo=False)
+ENGINE = create_engine("sqlite:///ratings.db", echo=True)
 Session = scoped_session(sessionmaker(bind=ENGINE, autocommit = False, autoflush = False))
 
 Base = declarative_base()
@@ -26,6 +26,9 @@ class User(Base):
     def __repr__(self):
         return "User_id: %d, Email: %s, Age: %d, Zip: %s" % (self.id, self.email, self.age, self.zipcode)
 
+    def get_user_by_email(self, email):
+        user = Session.query(User).filter_by(email=email).one()
+        return user
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -57,7 +60,13 @@ class Rating(Base):
 
 
 ### End class declarations
-
+def get_user_by_email(email):
+    user = Session.query(User).filter_by(email=email).first()
+    return user
+def insert_new_user(new_user):
+    Session.add(new_user)
+    Session.commit()
+     
 
 # def connect():
 #     global ENGINE
