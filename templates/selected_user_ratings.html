@@ -1,0 +1,17 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Select User Dispaly rated movies and ratings</title>
+</head>
+<body>
+    <form action= >
+        Select User ID:
+        <label><SELECT name="selected_user">
+            { % for user in user_list % }
+            <label><option value={{user.id}}>{{ user.id }}</option></label>
+            { % endfor % }
+        </SELECT></label>
+        <label><input type="submit">Submit</input></label>
+
+</body>
+</html>

@@ -49,6 +49,11 @@ def returning_user_welcome():
             return redirect("/log_in")
 
 
+@app.route("/select_user")
+def select_user():
+    return render_template("selected_user_ratings.html")
+
+
 @app.route("/user_list")
 def index():
     user_list = model.Session.query(model.User).limit(5).all()
