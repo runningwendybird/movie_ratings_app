@@ -4,6 +4,7 @@ from sqlalchemy import Column, Integer, String, DateTime
 from sqlalchemy.orm import sessionmaker, scoped_session
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
+from pearson import pearson
 
 
 
@@ -29,6 +30,22 @@ class User(Base):
     def get_user_by_email(self, email):
         user = Session.query(User).filter_by(email=email).one()
         return user
+
+    def similarity(self, user2):
+        u_ratings = {}
+        paired_ratings = []
+        for r in self.rating:
+            u_ratings[r.movie_id] = r
+
+        for r in user2.rating:
+            u_r = u_ratings.get(r.movie_id)
+            if u_r:
+                paired_ratings.append((u_r.rating, r.rating))
+
+        if paired_ratings:
+            return pearson(paired_ratings)
+        else:
+            return 0.0
 
 class Movie(Base):
     __tablename__ = "movies"
@@ -112,6 +129,21 @@ def exclude_rated(user):
 def get_all_users():
     users = Session.query(User).all()
     return users
+
+def predict_rating(user, movie):
+    rating = user.rating
+    other_ratings = movie.rating
+    other_users = [ r.user for r in other_ratings]
+    similarities = [(user.similarity(other_user), other_user) for other_user in other_users]
+    similarities.sort(reverse = True)
+    top_user = similarities[0]
+    matched_rating = None
+    for rating in other_ratings:
+        if rating.user_id == top_user[1].id:
+            matched_rating = rating
+            break
+    return matched_rating.rating * top_user[0]
+
 
 # def exclude_rated(user):
 #     rated_movies = get_rating_history(user)
