@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h1>Add a rating!</h1>
+    <form action="/add_rating">
+        <p>Select Movie Title</p>
+        <label><select name="movie_to_rate">
+            {% for movie in movies %}
+        <label><option value={{ movie.id }}>{{ movie.name }}</option></label>
+            {% endfor %}
+        </select></label>
+        <br>
+        Select Rating
+            <label><select name="current_rating">
+            <label><option value=1>1 Star</option></label>
+            <label><option value=2>2 Star</option></label>
+            <label><option value=3>3 Star</option></label>
+            <label><option value=4>4 Star</option></label>
+            <label><option value=5>5 Star</option></label>
+        </select></label>
+        <br>
+        <label><input type="submit">Submit</input></label>
+    </form>
+     
+     <h1>Update a rating!</h1>
+     <form action="/update_ratings">
+        <p>Select Movie Title</p>
+        <label><select name="movie_to_rate">
+            {% for rated_movie in rated_movies %}
+        <label><option value={{ rated_movie.movies.id}}>{{ rated_movie.movies.name }}</option></label>
+            {% endfor %}
+        </select></label>
+         <br>
+        Select Rating
+            <label><select name="current_rating">
+            <label><option value=1>1 Star</option></label>
+            <label><option value=2>2 Star</option></label>
+            <label><option value=3>3 Star</option></label>
+            <label><option value=4>4 Star</option></label>
+            <label><option value=5>5 Star</option></label>
+        </select></label>
+        <br>
+        <label><input type="submit">Submit</input></label>
+    </form>
+</body>
+</html>
