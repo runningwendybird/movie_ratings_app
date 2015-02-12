@@ -51,7 +51,16 @@ def returning_user_welcome():
 
 @app.route("/select_user")
 def select_user():
-    return render_template("selected_user_ratings.html")
+    user_list = model.get_all_users()
+    print user_list
+    return render_template("selected_user_ratings.html", user_list=user_list)
+
+@app.route("/display_user_ratings")
+def display_user_ratings():
+    user_to_be_viewed = request.args.get("selected_user")
+    user_object=model.get_user_by_id(user_to_be_viewed)
+    rating_history = model.get_rating_history(user_object)
+    return render_template("display_user_ratings.html", user=user_to_be_viewed, rating_history=rating_history)
 
 
 @app.route("/user_list")

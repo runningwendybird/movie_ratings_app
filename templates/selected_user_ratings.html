@@ -4,12 +4,12 @@
     <title>Select User Dispaly rated movies and ratings</title>
 </head>
 <body>
-    <form action= >
+    <form action="/display_user_ratings" >
         Select User ID:
         <label><SELECT name="selected_user">
-            { % for user in user_list % }
-            <label><option value={{user.id}}>{{ user.id }}</option></label>
-            { % endfor % }
+            {% for i in user_list %}
+            <label><option value={{ i.id }}>{{ i.id }}</option></label>
+            {% endfor %}
         </SELECT></label>
         <label><input type="submit">Submit</input></label>
 

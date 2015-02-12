@@ -64,6 +64,10 @@ def get_user_by_email(email):
     user = Session.query(User).filter_by(email=email).first()
     return user
 
+def get_user_by_id(id):
+    user = Session.query(User).filter_by(id=id).first()
+    return user
+
 def insert_new_user(new_user):
     Session.add(new_user)
     Session.commit()
@@ -77,7 +81,6 @@ def get_movie_history(user):
     movies = []
     for rating in ratings:
         movies.append(rating.movies)
-
     return movies
 
 
@@ -105,6 +108,11 @@ def exclude_rated(user):
             pass
 
     return unrated_movies
+
+def get_all_users():
+    users = Session.query(User).all()
+    return users
+
 # def exclude_rated(user):
 #     rated_movies = get_rating_history(user)
 #     all_movies = Session.query(Movie.id).all()

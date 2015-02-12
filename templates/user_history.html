@@ -9,6 +9,7 @@
     <p> Your Age: {{ user.age }} </p>
     <p> Your Zipcode: {{ user.zipcode }} </p>
     <a href="/rating_view">Add or update your movie ratings</a>
+    <a href="/select_user">View other users ratings</a>
     <ul>
     {% for rating in ratings_list %}
         <li> Movie Title: {{ rating.movies.name}} Rating: {{ rating.rating }} </li>

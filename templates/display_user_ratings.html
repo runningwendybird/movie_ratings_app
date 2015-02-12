@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <a href="/user_profile">Return to your profile</a>
+    <br>
+    <a href="/select_user">Select a new user</a>
+    <br>
+    <h1>Ratings for User {{ user }}</h1>
+
+        <ul>
+        {% for rating in rating_history %}
+        <li> Movie Title: {{ rating.movies.name}} Rating: {{ rating.rating }} </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
