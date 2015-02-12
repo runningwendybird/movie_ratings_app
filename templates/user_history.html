@@ -4,8 +4,17 @@
     <title>User History</title>
 </head>
 <body>
-    <h1>Your History</h1>
+    <h1>Your Profile</h1>
+    <p> Your Email: {{ user.email }}</p>
+    <p> Your Age: {{ user.age }} </p>
+    <p> Your Zipcode: {{ user.zipcode }} </p>
+    <a href="/rating_view">Add or update your movie ratings</a>
+    <ul>
+    {% for rating in ratings_list %}
+        <li> Movie Title: {{ rating.movies.name}} Rating: {{ rating.rating }} </li>
 
+    {% endfor %}
+    </ul>
 
 </body>
 </html>
