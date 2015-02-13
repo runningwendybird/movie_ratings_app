@@ -101,6 +101,7 @@ class Rating(Base):
         return "Rating id: %d, Movie_id: %d, User_id: %d, Rating: %d" %(self.id, self.movie_id, self.user_id, self.rating)
 
 
+
 ### End class declarations
 def get_user_by_email(email):
     user = Session.query(User).filter_by(email=email).first()
@@ -159,6 +160,9 @@ def get_all_users():
     users = Session.query(User).all()
     return users
 
+def user_rating_by_movie(user_id, movie_id):
+    rating = Session.query(Rating).filter_by(movie_id=movie_id, user_id=user_id).first()
+    return rating
 
 
 

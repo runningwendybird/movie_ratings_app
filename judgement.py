@@ -71,12 +71,16 @@ def movie_view():
 @app.route("/movie_rating", methods=["GET"])
 def movie_rating():
     movie_id = request.args.get("movie_to_view")
+    user = model.get_user_by_email(session["email"])
     movie = model.get_movie_by_id(movie_id)
-    print "I GOT HERE!!!!!"
-    print movie
+    rating = model.user_rating_by_movie(user.id, movie.id)
+    prediction = user.predict_rating(movie)
+    if rating == None:
+        rating = "You haven't rated this movie yet."
+    else:
+        rating = rating.rating
 
-
-    return render_template("selected_movie_view.html", movie=movie)
+    return render_template("selected_movie_view.html", movie=movie, rating=rating, prediction=prediction)
 
 @app.route("/user_list")
 def index():

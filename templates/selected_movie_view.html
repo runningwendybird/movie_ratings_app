@@ -4,11 +4,13 @@
     <title>Movie Rating</title>
 </head>
 <body>
+    <a href="/user_profile">Return to Your Profile</a>
     <h1>{{movie.name}}</h1>
     <h3><a href={{movie.imdb_url}}>Check out the IMDB Page</a></h3>
     Average User Rating: {{movie.ave()}}
-
-
-
+    <br>
+    Your Rating: {{ rating }}
+    <br>
+    Your Predicted Rating: {{ prediction }}
 </body>
 </html>
