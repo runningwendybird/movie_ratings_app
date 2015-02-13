@@ -47,6 +47,20 @@ class User(Base):
         else:
             return 0.0
 
+    def predict_rating(self, movie):
+        ratings = self.rating
+        other_ratings = movie.rating
+        similarities = [(self.similarity(r.user), r) for r in other_ratings]
+        similarities.sort(reverse = True)
+        similarities = [ sim for sim in similarities if sim[0] > 0 ]
+        if not similarities:
+            return None
+        numerator = sum([r.rating * similarity for similarity, r in similarities])
+        denominator = sum([similarity[0] for similarity in similarities])
+        return numerator/denominator
+
+
+
 class Movie(Base):
     __tablename__ = "movies"
 
@@ -58,6 +72,16 @@ class Movie(Base):
 
     def __repr__(self):
         return "Movie_id: %d, name: %s, release_date: %r, imdb_url: %s" %(self.id, self.name, self.released_at, self.imdb_url)
+
+    def ave(self):
+        total_sum=0
+        count=0
+        for individual_rating in self.rating:
+            total_sum = total_sum + individual_rating.rating
+            count = count + 1
+
+        count=float(count)
+        return total_sum/count 
 
 class Rating(Base):
     __tablename__ = "rating"
@@ -71,6 +95,7 @@ class Rating(Base):
 
     movies = relationship("Movie",
         backref=backref("rating", order_by=id))
+
     
     def __repr__(self):
         return "Rating id: %d, Movie_id: %d, User_id: %d, Rating: %d" %(self.id, self.movie_id, self.user_id, self.rating)
@@ -105,6 +130,10 @@ def get_movies():
     movies = Session.query(Movie).all()
     return movies
 
+def get_movie_by_id(id):
+    movie = Session.query(Movie).filter_by(id=id).first()
+    return movie
+
 def add_rating(movie, rating, user):
     new_rating = Rating(movie_id=movie, user_id=user.id, rating=rating)
     Session.add(new_rating)
@@ -130,19 +159,8 @@ def get_all_users():
     users = Session.query(User).all()
     return users
 
-def predict_rating(user, movie):
-    rating = user.rating
-    other_ratings = movie.rating
-    other_users = [ r.user for r in other_ratings]
-    similarities = [(user.similarity(other_user), other_user) for other_user in other_users]
-    similarities.sort(reverse = True)
-    top_user = similarities[0]
-    matched_rating = None
-    for rating in other_ratings:
-        if rating.user_id == top_user[1].id:
-            matched_rating = rating
-            break
-    return matched_rating.rating * top_user[0]
+
+
 
 
 # def exclude_rated(user):

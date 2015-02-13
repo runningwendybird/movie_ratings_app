@@ -62,6 +62,21 @@ def display_user_ratings():
     rating_history = model.get_rating_history(user_object)
     return render_template("display_user_ratings.html", user=user_to_be_viewed, rating_history=rating_history)
 
+@app.route("/movie_view")
+def movie_view():
+    movie_list = model.get_movies()
+
+    return render_template("movie_view.html", movie_list=movie_list)
+
+@app.route("/movie_rating", methods=["GET"])
+def movie_rating():
+    movie_id = request.args.get("movie_to_view")
+    movie = model.get_movie_by_id(movie_id)
+    print "I GOT HERE!!!!!"
+    print movie
+
+
+    return render_template("selected_movie_view.html", movie=movie)
 
 @app.route("/user_list")
 def index():

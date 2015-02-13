@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> Movie View</title>
+</head>
+<body>
+    <a href="/user_profile">Return to Your Profile</a>
+    <h1>View a Movie's Rating</h1>
+    
+    <form action="/movie_rating">
+        <label><select name="movie_to_view"></label>
+        {% for movie in movie_list %}
+        <label><option value={{ movie.id }}> {{ movie.name }}</option></label>
+        {% endfor %}
+        <label><input type="submit"></label>
+    </select>
+    </form>
+</body>
+</html>
